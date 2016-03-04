@@ -1,23 +1,23 @@
-E=$(PWD)/final
+E=$(PWD)/run
 UID=$(shell id -u)
 GID=$(shell id -g)
 
 ifdef DOCKER_USERNAME
-FINAL_TAG=$(DOCKER_USERNAME)/ipmitool
+TAG=$(DOCKER_USERNAME)/ipmitool
 else
-FINAL_TAG=ipmitool
+TAG=ipmitool
 endif
 
-.PHONY: build final
+.PHONY: build run
 
-all: build final
+all: build run
 
 build:
 	docker build --tag=ipmitool-docker-build build/
 
-final: build
+run: build
 	docker run -u $(UID):$(GID) -v $(E):/export ipmitool-docker-build
-	docker build --tag=$(FINAL_TAG) final/
+	docker build --tag=$(TAG) run/
 
 clean:
-	$(RM) -r final/install
+	$(RM) -r run/install
