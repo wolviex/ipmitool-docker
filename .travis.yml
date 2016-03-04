@@ -1,0 +1,19 @@
+language: c
+
+sudo: false
+
+services:
+  - docker
+
+cache:
+  apt: true
+
+before_install:
+  - make
+
+after_success:
+  - docker login --email="$DOCKER_EMAIL" --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
+  - docker push "$DOCKER_USERNAME/ipmitool"
+
+notifications:
+  email: true
