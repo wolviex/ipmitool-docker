@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.3
 MAINTAINER Dennis Schridde <dennis.schridde@uni-heidelberg.de>
 RUN apk -U add curl file gcc libgcc libc-dev make libtool
 COPY script/ /
