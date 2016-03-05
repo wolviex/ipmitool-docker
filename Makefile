@@ -25,7 +25,7 @@ all: build run
 build:
 	docker build --tag=ipmitool-docker-build build/
 
-run: build
+run: build clean
 	docker run -u $(UID):$(GID) -v $(E):/export ipmitool-docker-build
 	docker build --tag=$(NAME):$(VERSION) run/
 ifdef COMMIT
@@ -33,4 +33,4 @@ ifdef COMMIT
 endif
 
 clean:
-	$(RM) -r run/install
+	$(RM) -r $(E)/install
