@@ -66,6 +66,13 @@ tar -xjf "${A}"
 
 cd "${S}"
 epatch
-./configure --prefix=/usr
+./configure \
+	--prefix=/usr \
+	--enable-intf-lan=static \
+	--enable-intf-usb=static \
+	--enable-intf-lanplus=static \
+	--enable-intf-serial=static \
+	--enable-intf-open=static \
+	--enable-intf-imb=static
 make
 make install DESTDIR="${D}"
