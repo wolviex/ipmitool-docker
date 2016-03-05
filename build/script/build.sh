@@ -66,6 +66,6 @@ tar -xjf "${A}"
 
 cd "${S}"
 epatch
-./configure --prefix=/usr LDFLAGS=-static
+./configure --prefix=/usr
 make
 make install DESTDIR="${D}"
