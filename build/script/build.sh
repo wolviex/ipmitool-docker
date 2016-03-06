@@ -73,6 +73,7 @@ epatch
 	--enable-intf-lanplus=static \
 	--enable-intf-serial=static \
 	--enable-intf-open=static \
-	--enable-intf-imb=static
+	--enable-intf-imb=static \
+	CFLAGS="-O2 -D_XOPEN_SOURCE=500"
 make
 make install DESTDIR="${D}"
