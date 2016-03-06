@@ -10,11 +10,14 @@
  #endif
  
  /*Just to make the DEBUG code cleaner.*/
-@@ -1985,6 +1982,7 @@
+@@ -1985,6 +1982,10 @@
  	off_t 				startpAddress = (off_t)startAddress;
  	unsigned int 		diff;
  	char 				*startvAddress;
 +	long int pagesize = sysconf(_SC_PAGESIZE);
++	if (pagesize < 0) {
++		perror("Invalid pagesize");
++	}
  
  	if ((startAddress == 0) || (addressLength <= 0))
  		return ACCESN_ERROR;
@@ -27,11 +30,14 @@
  	startpAddress -= diff;
  	length += diff;
  
-@@ -2043,9 +2041,10 @@
+@@ -2043,9 +2041,13 @@
  UnmapPhysicalMemory( int virtualAddress, int Length )
  {
  	unsigned int diff = 0;
 +	long int pagesize = sysconf(_SC_PAGESIZE);
++	if (pagesize < 0) {
++		perror("Invalid pagesize");
++	}
  
  	/* page align the virtual address and adjust length accordingly  */
 -	diff = 	((unsigned int) virtualAddress) % PAGESIZE;
