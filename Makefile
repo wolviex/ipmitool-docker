@@ -22,15 +22,15 @@ ifdef REBUILD
 DOCKER_OPTS=--no-cache
 endif
 
-.PHONY: build run
+.PHONY: build-ipmitool ipmitool
 
-all: build run
+all: build-ipmitool ipmitool
 
-build:
+build-ipmitool: clean
 	docker build $(DOCKER_OPTS) --tag=build-ipmitool build/
-
-run: build clean
 	docker run -u $(UID):$(GID) -v $(E):/export build-ipmitool
+
+ipmitool: build
 	docker build --tag=$(NAME):$(VERSION) run/
 ifdef COMMIT
 	docker tag $(NAME):$(VERSION) $(NAME):$(COMMIT)

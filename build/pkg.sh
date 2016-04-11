@@ -50,6 +50,10 @@ epatch() {
 	done
 }
 
+pkg_install() {
+	cp -a "${D}" "${ROOT}"
+}
+
 build() {
 	[[ "$1" ]] || die "${USAGE_build}"
 	P="$1" ; shift
@@ -70,6 +74,7 @@ build() {
 	src_compile
 	src_install
 	set +x
+	pkg_install
 }
 
 manifest() {
