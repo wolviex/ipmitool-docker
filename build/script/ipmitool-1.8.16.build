@@ -1,0 +1,48 @@
+SRC_URI="http://downloads.sourceforge.net/project/${PN}/${PN}/${PV}/${P}.tar.bz2"
+
+PATCHES=(
+	"ipmitool-1.8.16-imbapi-include-stddef-h.patch"
+	"ipmitool-1.8.16-imbapi-include-socket-h.patch"
+	"ipmitool-1.8.16-imbapi-pagesize.patch"
+)
+
+A="${SRC_URI##*/}"
+S="${WORKDIR}/${P}"
+
+src_fetch() {
+	cd "${SOURCEDIR}"
+	curl -L -o "${A}" "${SRC_URI}"
+}
+
+src_unpack() {
+	cd "${WORKDIR}"
+	tar -xjf "${A}"
+}
+
+src_prepare() {
+	cd "${S}"
+	epatch
+}
+
+src_configure() {
+	cd "${S}"
+	"${S}"/configure \
+		--prefix=/usr \
+		--enable-intf-lan=static \
+		--enable-intf-usb=static \
+		--enable-intf-lanplus=static \
+		--enable-intf-serial=static \
+		--enable-intf-open=static \
+		--enable-intf-imb=static \
+		CFLAGS="-O2 -D_XOPEN_SOURCE=500"
+}
+
+src_compile() {
+	cd "${S}"
+	make
+}
+
+src_install() {
+	cd "${S}"
+	make install DESTDIR="${D}"
+}
