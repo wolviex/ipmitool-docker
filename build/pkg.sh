@@ -10,6 +10,14 @@ die() {
 	exit 1
 }
 
+has() {
+	local flag="$1" ; shift
+	for f in "$@" ; do
+		[[ "${f}" = "${flag}" ]] && return 0
+	done
+	return 1
+}
+
 verify() {
 	while read type sum file ; do
 		case "${type}" in
@@ -20,7 +28,9 @@ verify() {
 				echo "${sum}  ${SCRIPTDIR}/${file}" | sha256sum -c
 				;;
 			SOURCE)
-				echo "${sum}  ${SOURCEDIR}/${file}" | sha256sum -c
+				if has "${file}" "${SOURCES[@]}" ; then
+					echo "${sum}  ${SOURCEDIR}/${file}" | sha256sum -c
+				fi
 				;;
 			*)
 				die "Unknown manifest type '${type}'"
