@@ -1,4 +1,6 @@
-SRC_URI="http://downloads.sourceforge.net/project/${PN}/${PN}/${PV}/${P}.tar.bz2"
+SOURCES=(
+	"http://downloads.sourceforge.net/project/${PN}/${PN}/${PV}/${P}.tar.bz2"
+)
 
 PATCHES=(
 	"ipmitool-1.8.16-imbapi-include-stddef-h.patch"
@@ -6,18 +8,24 @@ PATCHES=(
 	"ipmitool-1.8.16-imbapi-pagesize.patch"
 )
 
-A="${SRC_URI##*/}"
 S="${WORKDIR}/${P}"
 B="${S}_build"
 
 src_fetch() {
+	local uri file
 	cd "${SOURCEDIR}"
-	curl -L -o "${A}" "${SRC_URI}"
+	for uri in "${SOURCES[@]}" ; do
+		file="${uri##*/}"
+		curl -L -o "${file}" "${uri}"
+	done
 }
 
 src_unpack() {
 	cd "${WORKDIR}"
-	tar -xjf "${A}"
+	for uri in "${SOURCES[@]}" ; do
+		file="${uri##*/}"
+		tar -xjf "${file}"
+	done
 }
 
 src_prepare() {
