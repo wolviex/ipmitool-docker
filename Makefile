@@ -28,7 +28,11 @@ all: build-ipmitool ipmitool
 
 build-ipmitool: clean
 	docker build $(DOCKER_OPTS) --tag=build-ipmitool build/
+ifdef S
+	docker run -u $(UID):$(GID) -v $(S):/tmp/ipmitool-0 -v $(E):/export build-ipmitool
+else
 	docker run -u $(UID):$(GID) -v $(E):/export build-ipmitool
+endif
 
 ipmitool: build
 	docker build --tag=$(NAME):$(VERSION) run/
