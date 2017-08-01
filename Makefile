@@ -19,7 +19,7 @@ endif
 endif
 
 ifdef CIRCLE_BRANCH
-ifeq ($(CIRCLE_BRANCH),master)
+ifneq ($(CIRCLE_BRANCH),master)
 ifndef VERSION
 VERSION:=$(CIRCLE_BRANCH)
 endif
