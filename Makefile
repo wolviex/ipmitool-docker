@@ -10,22 +10,28 @@ ifdef DOCKER_REPOSITORY
 NAME:=$(DOCKER_REPOSITORY)
 endif
 
-BRANCH:=latest
+VERSION:=latest
 
 ifdef CIRCLECI
 
-ifdef CIRCLE_BRANCH
-ifneq ($(CIRCLE_BRANCH),master)
-BRANCH:=$(CIRCLE_BRANCH)
+ifdef CIRCLE_TAG
+ifndef VERSION
+VERSION:=$(CIRCLE_TAG)
 endif
 endif
 
-ifdef CIRCLE_TAG
-TAG:=$(CIRCLE_TAG)
+ifdef CIRCLE_BRANCH
+ifeq ($(CIRCLE_BRANCH),master)
+ifndef VERSION
+VERSION:=$(CIRCLE_BRANCH)
+endif
+endif
 endif
 
 ifdef CIRCLE_SHA1
-COMMIT:=$(CIRCLE_SHA1)
+ifndef VERSION
+VERSION:=$(CIRCLE_SHA1)
+endif
 endif
 
 else
@@ -33,15 +39,24 @@ else
 ifdef TRAVIS_BRANCH
 ifneq ($(TRAVIS_BRANCH),master)
 BRANCH:=$(TRAVIS_BRANCH)
+ifndef VERSION
+VERSION:=$(TRAVIS_BRANCH)
+endif
 endif
 endif
 
 ifdef TRAVIS_TAG
 TAG:=$(TRAVIS_TAG)
+ifndef VERSION
+VERSION:=$(TRAVIS_TAG)
+endif
 endif
 
 ifdef TRAVIS_COMMIT
 COMMIT:=$(TRAVIS_COMMIT)
+ifndef VERSION
+VERSION:=$(TRAVIS_COMMIT)
+endif
 endif
 
 endif
@@ -67,10 +82,13 @@ endif
 	docker rmi $(BUILD_IMAGE)
 
 ipmitool: build-ipmitool
-	docker build --tag=$(NAME):$(BRANCH) run/
+	docker build --tag=$(NAME):$(VERSION) run/
+ifdef BRANCH
+	docker tag $(NAME):$(VERSION) $(NAME):$(BRANCH)
+endif
 ifdef TAG
-	docker tag $(NAME):$(BRANCH) $(NAME):$(TAG)
+	docker tag $(NAME):$(VERSION) $(NAME):$(TAG)
 endif
 ifdef COMMIT
-	docker tag $(NAME):$(BRANCH) $(NAME):$(COMMIT)
+	docker tag $(NAME):$(VERSION) $(NAME):$(COMMIT)
 endif
