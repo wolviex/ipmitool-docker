@@ -10,6 +10,21 @@ NAME:=$(DOCKER_REPOSITORY)
 endif
 
 VERSION:=latest
+
+ifdef CIRCLECI
+
+ifdef CIRCLE_BRANCH
+ifneq ($(CIRCLE_BRANCH),master)
+VERSION:=$(CIRCLE_BRANCH)
+endif
+endif
+
+ifdef CIRCLE_SHA1
+COMMIT:=$(CIRCLECI_SHA1)
+endif
+
+else
+
 ifdef TRAVIS_BRANCH
 ifneq ($(TRAVIS_BRANCH),master)
 VERSION:=$(TRAVIS_BRANCH)
@@ -18,6 +33,8 @@ endif
 
 ifdef TRAVIS_COMMIT
 COMMIT:=$(TRAVIS_COMMIT)
+endif
+
 endif
 
 ifdef REBUILD

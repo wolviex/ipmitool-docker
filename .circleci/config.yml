@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+    - image: quay.io/bwvisu/docker-dev:v17.06.0-debian9.1-1
+    steps:
+    - checkout
+    - setup_remote_docker
+    - run:
+        name: Build image
+        command: make
+    - deploy: 
+        name: Deploy image
+        command: |
+          docker login "$DOCKER_REPOSITORY" --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
+          docker push "$DOCKER_REPOSITORY"
