@@ -1,4 +1,4 @@
-FROM alpine:3.3
+FROM alpine:3.5
 MAINTAINER Dennis Schridde <dennis.schridde@uni-heidelberg.de>
 RUN apk -U add linux-headers openssl-dev curl file gcc libgcc libc-dev make libtool rsync
 COPY . /
