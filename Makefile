@@ -3,8 +3,8 @@ UID:=$(shell id -u)
 GID:=$(shell id -g)
 
 NAME:=ipmitool
-ifdef DOCKER_USERNAME
-NAME:=$(DOCKER_USERNAME)/ipmitool
+ifdef DOCKER_REPOSITORY
+NAME:=$(DOCKER_REPOSITORY)
 endif
 
 VERSION:=latest
