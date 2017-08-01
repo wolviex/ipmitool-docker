@@ -1,3 +1,4 @@
+BUILD_IMAGE:=$(shell mktemp -u tmp.XXXXXXXXXX | tr A-Z a-z)
 BUILD:=$(shell mktemp -u tmp.XXXXXXXXXX | tr A-Z a-z)
 EXPORT:=$(shell mktemp -u tmp.XXXXXXXXXX | tr A-Z a-z)
 
@@ -47,15 +48,15 @@ all: build-ipmitool ipmitool
 
 build-ipmitool:
 	docker create --name=$(EXPORT) --volume=/export alpine:3.5 /bin/true
-	docker build $(DOCKER_OPTS) --tag=$(BUILD) build/
+	docker build $(DOCKER_OPTS) --tag=$(BUILD_IMAGE) build/
 ifdef S
-	docker run -u $(UID):$(GID) --volume=$(S):/tmp/ipmitool-0 --volumes-from=$(EXPORT) $(BUILD)
+	docker run --name=$(BUILD) --user=$(UID):$(GID) --volumes-from=$(EXPORT) --volume=$(S):/tmp/ipmitool-0 $(BUILD_IMAGE)
 else
-	docker run -u $(UID):$(GID) --volumes-from=$(EXPORT) $(BUILD)
+	docker run --name=$(BUILD) --user=$(UID):$(GID) --volumes-from=$(EXPORT) $(BUILD_IMAGE)
 endif
 	docker cp $(EXPORT):/export/ run/install/
-	docker rm $(EXPORT)
-	docker rmi $(BUILD)
+	docker rm $(EXPORT) $(BUILD)
+	docker rmi $(BUILD_IMAGE)
 
 ipmitool: build-ipmitool
 	docker build --tag=$(NAME):$(VERSION) run/
