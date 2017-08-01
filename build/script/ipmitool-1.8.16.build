@@ -16,7 +16,7 @@ src_fetch() {
 	cd "${SOURCEDIR}"
 	for uri in "${SOURCES[@]}" ; do
 		file="${uri##*/}"
-		curl -L -o "${file}" "${uri}"
+		curl --fail --silent --show-error --location --output "${file}" "${uri}"
 	done
 }
 
