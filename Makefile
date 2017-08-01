@@ -21,7 +21,7 @@ endif
 endif
 
 ifdef CIRCLE_SHA1
-COMMIT:=$(CIRCLECI_SHA1)
+COMMIT:=$(CIRCLE_SHA1)
 endif
 
 else
