@@ -18,42 +18,39 @@ VERSION:=$(CIRCLE_TAG)
 endif
 endif
 
-ifdef CIRCLE_BRANCH
-ifneq ($(CIRCLE_BRANCH),master)
-ifndef VERSION
-VERSION:=$(CIRCLE_BRANCH)
-endif
-endif
-endif
-
 ifdef CIRCLE_SHA1
 ifndef VERSION
 VERSION:=$(CIRCLE_SHA1)
 endif
 endif
 
+ifdef CIRCLE_BRANCH
+ifeq ($(CIRCLE_BRANCH),master)
+BRANCH:=latest
+else
+BRANCH:=$(CIRCLE_BRANCH)
+endif
+endif
+
 else
 
 ifdef TRAVIS_TAG
-TAG:=$(TRAVIS_TAG)
 ifndef VERSION
 VERSION:=$(TRAVIS_TAG)
 endif
 endif
 
-ifdef TRAVIS_BRANCH
-ifneq ($(TRAVIS_BRANCH),master)
-BRANCH:=$(TRAVIS_BRANCH)
+ifdef TRAVIS_COMMIT
 ifndef VERSION
-VERSION:=$(TRAVIS_BRANCH)
-endif
+VERSION:=$(TRAVIS_COMMIT)
 endif
 endif
 
-ifdef TRAVIS_COMMIT
-COMMIT:=$(TRAVIS_COMMIT)
-ifndef VERSION
-VERSION:=$(TRAVIS_COMMIT)
+ifdef TRAVIS_BRANCH
+ifeq ($(TRAVIS_BRANCH),master)
+BRANCH:=latest
+else
+BRANCH:=$(TRAVIS_BRANCH)
 endif
 endif
 
@@ -87,10 +84,4 @@ ipmitool: build-ipmitool
 	docker build --tag=$(NAME):$(VERSION) run/
 ifdef BRANCH
 	docker tag $(NAME):$(VERSION) $(NAME):$(BRANCH)
-endif
-ifdef TAG
-	docker tag $(NAME):$(VERSION) $(NAME):$(TAG)
-endif
-ifdef COMMIT
-	docker tag $(NAME):$(VERSION) $(NAME):$(COMMIT)
 endif
