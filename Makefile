@@ -34,7 +34,7 @@ else
 	docker run -u $(UID):$(GID) -v $(E):/export build-ipmitool
 endif
 
-ipmitool: build
+ipmitool: build-ipmitool
 	docker build --tag=$(NAME):$(VERSION) run/
 ifdef COMMIT
 	docker tag $(NAME):$(VERSION) $(NAME):$(COMMIT)
