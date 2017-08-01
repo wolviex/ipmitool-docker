@@ -81,6 +81,7 @@ endif
 	docker rmi $(BUILD_IMAGE)
 
 ipmitool: build-ipmitool
+	find run/install/ -exec touch --date=@0 {} \;
 	docker build --tag=$(NAME):$(VERSION) run/
 ifdef BRANCH
 	docker tag $(NAME):$(VERSION) $(NAME):$(BRANCH)
