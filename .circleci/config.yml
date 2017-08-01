@@ -14,3 +14,11 @@ jobs:
         command: |
           docker login "$DOCKER_REPOSITORY" --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD"
           docker push "$DOCKER_REPOSITORY"
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+    - build:
+        filters:
+          tags:
+            only: /.*/
