@@ -1,25 +1,25 @@
-E=$(PWD)/run
-UID=$(shell id -u)
-GID=$(shell id -g)
+E:=$(PWD)/run
+UID:=$(shell id -u)
+GID:=$(shell id -g)
 
-NAME=ipmitool
+NAME:=ipmitool
 ifdef DOCKER_USERNAME
-NAME=$(DOCKER_USERNAME)/ipmitool
+NAME:=$(DOCKER_USERNAME)/ipmitool
 endif
 
-VERSION=latest
+VERSION:=latest
 ifdef TRAVIS_BRANCH
 ifneq ($(TRAVIS_BRANCH),master)
-VERSION=$(TRAVIS_BRANCH)
+VERSION:=$(TRAVIS_BRANCH)
 endif
 endif
 
 ifdef TRAVIS_COMMIT
-COMMIT=$(TRAVIS_COMMIT)
+COMMIT:=$(TRAVIS_COMMIT)
 endif
 
 ifdef REBUILD
-DOCKER_OPTS=--no-cache
+DOCKER_OPTS:=--no-cache
 endif
 
 .PHONY: build-ipmitool ipmitool
