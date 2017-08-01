@@ -10,8 +10,6 @@ ifdef DOCKER_REPOSITORY
 NAME:=$(DOCKER_REPOSITORY)
 endif
 
-VERSION:=latest
-
 ifdef CIRCLECI
 
 ifdef CIRCLE_TAG
@@ -59,6 +57,10 @@ VERSION:=$(TRAVIS_COMMIT)
 endif
 endif
 
+endif
+
+ifndef VERSION
+VERSION:=latest
 endif
 
 ifdef REBUILD
