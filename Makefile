@@ -20,6 +20,10 @@ BRANCH:=$(CIRCLE_BRANCH)
 endif
 endif
 
+ifdef CIRCLE_TAG
+TAG:=$(CIRCLE_TAG)
+endif
+
 ifdef CIRCLE_SHA1
 COMMIT:=$(CIRCLE_SHA1)
 endif
@@ -30,6 +34,10 @@ ifdef TRAVIS_BRANCH
 ifneq ($(TRAVIS_BRANCH),master)
 BRANCH:=$(TRAVIS_BRANCH)
 endif
+endif
+
+ifdef TRAVIS_TAG
+TAG:=$(TRAVIS_TAG)
 endif
 
 ifdef TRAVIS_COMMIT
@@ -60,6 +68,9 @@ endif
 
 ipmitool: build-ipmitool
 	docker build --tag=$(NAME):$(BRANCH) run/
+ifdef TAG
+	docker tag $(NAME):$(BRANCH) $(NAME):$(TAG)
+endif
 ifdef COMMIT
 	docker tag $(NAME):$(BRANCH) $(NAME):$(COMMIT)
 endif
