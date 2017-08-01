@@ -34,19 +34,19 @@ endif
 
 else
 
+ifdef TRAVIS_TAG
+TAG:=$(TRAVIS_TAG)
+ifndef VERSION
+VERSION:=$(TRAVIS_TAG)
+endif
+endif
+
 ifdef TRAVIS_BRANCH
 ifneq ($(TRAVIS_BRANCH),master)
 BRANCH:=$(TRAVIS_BRANCH)
 ifndef VERSION
 VERSION:=$(TRAVIS_BRANCH)
 endif
-endif
-endif
-
-ifdef TRAVIS_TAG
-TAG:=$(TRAVIS_TAG)
-ifndef VERSION
-VERSION:=$(TRAVIS_TAG)
 endif
 endif
 
