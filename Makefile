@@ -56,10 +56,6 @@ endif
 
 endif
 
-ifndef VERSION
-VERSION:=latest
-endif
-
 ifdef REBUILD
 DOCKER_OPTS:=--no-cache
 endif
