@@ -51,7 +51,7 @@ epatch() {
 }
 
 pkg_install() {
-	cp -a "${D}" "${ROOT}"
+	rsync -av "${D}/" "${ROOT}/"
 }
 
 build() {
