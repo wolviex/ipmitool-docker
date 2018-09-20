@@ -1,4 +1,4 @@
-EAPI=1
+eapi 1
 
 SOURCES=(
 	"http://downloads.sourceforge.net/project/${PN}/${PN}/${PV}/${P}.tar.bz2"

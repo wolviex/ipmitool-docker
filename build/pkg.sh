@@ -106,6 +106,12 @@ set_package_env() {
 	split_package_name_version "${P}"
 }
 
+eapi() {
+	local EAPI="$1" ; shift
+	test -f "${MYDIR}/pkg-api-${EAPI}.sh" || die "EAPI ${EAPI} not found!"
+	source "${MYDIR}/pkg-api-${EAPI}.sh"
+}
+
 build() {
 	P="$1" ; shift
 	test -n "${P}" || die "${USAGE_build}"
@@ -114,10 +120,7 @@ build() {
 
 	local SCRIPTFILE="${SCRIPTDIR}/${P}.build"
 	test -f "${SCRIPTFILE}" || die "${SCRIPTFILE} not found!"
-
 	source "${SCRIPTFILE}"
-	test -n "${EAPI}" || die "${SCRIPTFILE} needs to set EAPI!"
-	source "${MYDIR}/pkg-api-${EAPI}.sh"
 
 	src_fetch
 	verify_manifest
@@ -151,8 +154,6 @@ sources_manifest() {
 	set_package_env "${SCRIPTFILE}"
 
 	source "${SCRIPTFILE}"
-	test -n "${EAPI}" || die "${SCRIPTFILE} needs to set EAPI!"
-	source "${MYDIR}/pkg-api-${EAPI}.sh"
 
 	src_fetch
 

@@ -1,4 +1,4 @@
-EAPI=1
+eapi 1
 
 src_fetch() {
 	:

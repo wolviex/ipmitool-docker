@@ -1,5 +1,5 @@
-SCRIPT  ipmitool-0.build  349  2ede19fdd7cbe44b7affa9726d7f9618f3eba0096ca11ffd4e7a2b7499e8b21d
-SCRIPT  ipmitool-1.8.16.build  548  b88557a93ed65fa201849da941a5bae08e2b10bef6ca8b0db0890fb582e616e6
+SCRIPT  ipmitool-0.build  349  3b678507de61665627f31f04c0e821985dba5bda0ee7fbb9a4cd01e24efdcbd3
+SCRIPT  ipmitool-1.8.16.build  548  73f3e7b3140154fb4c483948d30f0905e5755c26ee8e09ea1e4ba20d10cf43a7
 SOURCE  ipmitool-1.8.16.tar.bz2  778882  3c5da6b067abf475bc24685120ec79f6e4ef6b3ea606aaa267e462023861223e
 AUX  ipmitool-1.8.16-imbapi-include-socket-h.patch  334  ce7074d9e37aae3fd4c6d662b3d8d7ac5c7126fd689abc389abbf04685a22d76
 AUX  ipmitool-1.8.16-imbapi-include-stddef-h.patch  381  d9f48fe487de5d2db20fbd5f81de47e0525105139571910551f12f9b860a45d6
