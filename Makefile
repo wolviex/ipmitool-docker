@@ -65,15 +65,17 @@ endif
 all: build-ipmitool ipmitool
 
 build-ipmitool:
-	docker create --name=$(EXPORT) --user=$(UID):$(GID) --volume=/export alpine:3.5 /bin/true
 	docker build $(DOCKER_OPTS) --tag=$(BUILD_IMAGE) build/
+	docker volume create $(EXPORT)
+	docker run --mount=source=$(EXPORT),target=/export --tty --rm docker.io/library/alpine:3.7 /bin/chown -R $(UID):$(GID) /export
 ifdef S
-	docker run --name=$(BUILD) --user=$(UID):$(GID) --volumes-from=$(EXPORT) --volume=$(S):/tmp/ipmitool-0 --tty $(BUILD_IMAGE)
+	docker run --name=$(BUILD) --user=$(UID):$(GID) --mount=source=$(EXPORT),target=/export --volume=$(S):/tmp/ipmitool-0:ro --tty $(BUILD_IMAGE)
 else
-	docker run --name=$(BUILD) --user=$(UID):$(GID) --volumes-from=$(EXPORT) --tty $(BUILD_IMAGE)
+	docker run --name=$(BUILD) --user=$(UID):$(GID) --mount=source=$(EXPORT),target=/export --tty $(BUILD_IMAGE)
 endif
-	docker cp $(EXPORT):/export/ run/install/
-	docker rm $(EXPORT) $(BUILD)
+	docker cp $(BUILD):/export/ run/install/
+	docker rm $(BUILD)
+	docker volume rm $(EXPORT)
 	docker rmi $(BUILD_IMAGE)
 
 ipmitool: build-ipmitool
