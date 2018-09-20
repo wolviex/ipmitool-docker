@@ -77,6 +77,7 @@ verify_manifest() {
 
 epatch() {
 	for p in "${PATCHES[@]}" ; do
+		echo "* Applying patch: ${p}"
 		local n f="${AUXDIR}/${p}"
 		[ -f "${f}" ] || die "patch '${f}' not a file"
 		for (( n=0 ; n < 5 ; n++ )) ; do
@@ -108,6 +109,7 @@ set_package_env() {
 
 eapi() {
 	local EAPI="$1" ; shift
+	echo "* ${P} is using EAPI ${EAPI}"
 	test -f "${MYDIR}/pkg-api-${EAPI}.sh" || die "EAPI ${EAPI} not found!"
 	source "${MYDIR}/pkg-api-${EAPI}.sh"
 }
@@ -116,21 +118,35 @@ build() {
 	P="$1" ; shift
 	test -n "${P}" || die "${USAGE_build}"
 
+	echo "### Building ${P} ###"
+
 	split_package_name_version "${P}"
 
 	local SCRIPTFILE="${SCRIPTDIR}/${P}.build"
 	test -f "${SCRIPTFILE}" || die "${SCRIPTFILE} not found!"
 	source "${SCRIPTFILE}"
 
+	echo ">>> Fetching sources <<<"
 	src_fetch
+	echo ">>> Verifying scripts and sources <<<"
 	verify_manifest
+	echo ">>> Unpacking sources <<<"
 	src_unpack
+	echo ">>> Preparing sources <<<"
 	src_prepare
+	echo ">>> Configuring sources <<<"
 	set -x
 	src_configure
+	set +x
+	echo ">>> Compiling sources <<<"
+	set -x
 	src_compile
+	set +x
+	echo ">>> Installing sources <<<"
+	set -x
 	src_install
 	set +x
+	echo ">>> Installing package <<<"
 	pkg_install
 }
 
@@ -155,6 +171,7 @@ sources_manifest() {
 
 	source "${SCRIPTFILE}"
 
+	echo ">>> Fetching sources <<<"
 	src_fetch
 
 	local uri file
@@ -168,6 +185,8 @@ sources_manifest() {
 
 manifest() {
 	local MANIFESTFILE="${SCRIPTDIR}"/Manifest
+
+	echo "### Creating Manifest ###"
 
 	sed -i "${MANIFESTFILE}" \
 		-e '/^AUX  /d' \

@@ -6,6 +6,7 @@ src_fetch() {
 	cd "${CACHEDIR}"
 	for uri in "${SOURCES[@]}" ; do
 		file="${uri##*/}"
+		echo "* Fetching: ${file} ..."
 		if ! verify_source "${file}" ; then
 			curl --fail --silent --show-error --location --output "${file}" "${uri}"
 		fi
@@ -17,6 +18,7 @@ src_unpack() {
 	cd "${WORKDIR}"
 	for uri in "${SOURCES[@]}" ; do
 		file="${CACHEDIR}/${uri##*/}"
+		echo "* Unpacking: ${file} ..."
 		case "${file}" in
 			*.gz) tar -xzf "${file}" ;;
 			*.bz2) tar -xjf "${file}" ;;
