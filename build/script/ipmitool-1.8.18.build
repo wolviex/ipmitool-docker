@@ -4,12 +4,6 @@ SOURCES=(
 	"http://downloads.sourceforge.net/project/${PN}/${PN}/${PV}/${P}.tar.bz2"
 )
 
-PATCHES=(
-	"ipmitool-1.8.16-imbapi-include-stddef-h.patch"
-	"ipmitool-1.8.16-imbapi-include-socket-h.patch"
-	"ipmitool-1.8.16-imbapi-pagesize.patch"
-)
-
 src_configure() {
 	mkdir "${B}"
 	cd "${B}"
