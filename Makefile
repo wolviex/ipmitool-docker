@@ -25,10 +25,10 @@ endif
 endif
 
 ifdef CIRCLE_BRANCH
-ifeq ($(CIRCLE_BRANCH),master)
-BRANCH:=latest
-else
+ifneq ($(CIRCLE_BRANCH),master)
+ifndef BRANCH
 BRANCH:=$(CIRCLE_BRANCH)
+endif
 endif
 endif
 
@@ -47,14 +47,23 @@ endif
 endif
 
 ifdef TRAVIS_BRANCH
-ifeq ($(TRAVIS_BRANCH),master)
-BRANCH:=latest
-else
+ifneq ($(TRAVIS_BRANCH),master)
+ifndef BRANCH
 BRANCH:=$(TRAVIS_BRANCH)
+endif
 endif
 endif
 
 endif
+
+ifdef VERSION
+$(info Building version: $(VERSION))
+endif
+
+ifndef BRANCH
+BRANCH:=latest
+endif
+$(info Building from branch: $(BRANCH))
 
 ifdef REBUILD
 DOCKER_OPTS:=--no-cache
@@ -80,7 +89,7 @@ endif
 
 ipmitool: build-ipmitool
 	find run/install/ -exec touch --date=@0 {} \;
-	docker build --tag=$(NAME):$(VERSION) run/
-ifdef BRANCH
-	docker tag $(NAME):$(VERSION) $(NAME):$(BRANCH)
+	docker build --tag=$(NAME):$(BRANCH) run/
+ifdef VERSION
+	docker tag $(NAME):$(BRANCH) $(NAME):$(VERSION)
 endif
