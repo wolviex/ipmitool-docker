@@ -4,4 +4,4 @@ RUN apk --no-cache add linux-headers openssl-dev curl file gcc libgcc libc-dev m
 COPY . /
 ENV ROOT=/export D=/tmp/install SCRIPTDIR=/ AUXDIR=/aux WORKDIR=/tmp HOME=/tmp
 ENTRYPOINT ["/sbin/tini"]
-CMD ["/pkg.sh", "build", "ipmitool-1.8.18"]
+CMD ["/pkg.sh", "build", "ipmitool-1.8.19"]
